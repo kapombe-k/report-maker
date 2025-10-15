@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
+from flask_migrate import Migrate
 from models import db
 from resources.collections import CollectionResource
 from resources.expenses import ExpenseResource
@@ -26,6 +27,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+migrate = Migrate(app, db)
 api = Api(app)
 
 # Register resources
