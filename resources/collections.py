@@ -31,12 +31,8 @@ class CollectionResource(Resource):
         if data['payment_method'] == 'invoice' and 'invoice_source' not in data:
             return {'error': 'invoice_source is required for invoice payments'}, 400
 
-        try:
-            amount = float(data['amount'])
-            if amount <= 0:
-                return {'error': 'Amount must be positive'}, 400
-        except ValueError:
-            return {'error': 'Invalid amount'}, 400
+        if 'invoice_source' in data and data['payment_method'] != 'invoice':
+            return {'error': 'invoice_source should only be provided for invoice payments'}, 400
 
         date = data.get('date')
         if date:
@@ -47,6 +43,8 @@ class CollectionResource(Resource):
         else:
             from datetime import date
             date = date.today()
+
+        amount = float(data['amount'])
 
         collection = Collection(
             card_no=data['card_no'],

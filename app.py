@@ -31,9 +31,9 @@ migrate = Migrate(app, db)
 api = Api(app)
 
 # Register resources
-api.add_resource(CollectionResource, '/api/collections', '/api/collections/<string:date>')
-api.add_resource(ExpenseResource, '/api/expenses', '/api/expenses/<string:date>')
-api.add_resource(ReportResource, '/api/reports/<string:type>/<string:param>')
+api.add_resource(CollectionResource, '/collections', '/collections/<string:date>')
+api.add_resource(ExpenseResource, '/expenses', '/expenses/<string:date>')
+api.add_resource(ReportResource, '/reports/<string:type>/<string:param>')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

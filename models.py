@@ -25,7 +25,7 @@ class Collection(db.Model, SerializerMixin):
     procedure = db.Column(db.String(200), nullable=False)
     payment_method = db.Column(Enum(PaymentMethod), nullable=False)
     invoice_source = db.Column(db.String(100), nullable=True)  # Only for invoice payments
-    amount = db.Column(db.Float, nullable=False)
+    amount = db.Column(db.Float)
     date = db.Column(db.Date, default=date.today, nullable=False)
 
     serialize_rules = ('-id',)
