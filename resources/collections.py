@@ -62,3 +62,49 @@ class CollectionResource(Resource):
         except Exception:
             db.session.rollback()
             return {'error': 'Failed to save collection'}, 500
+        
+    def patch(self, collection_id):
+        collection = Collection.query.get(collection_id)
+        if not collection:
+            return {'error': 'Collection not found'}, 404
+
+        data = request.get_json()
+
+        if 'card_no' in data:
+            collection.card_no = data['card_no']
+        if 'procedure' in data:
+            collection.procedure = data['procedure']
+        if 'payment_method' in data:
+            if data['payment_method'] not in [pm.value for pm in PaymentMethod]:
+                return {'error': 'Invalid payment method'}, 400
+            collection.payment_method = PaymentMethod(data['payment_method'])
+        if 'invoice_source' in data:
+            collection.invoice_source = data['invoice_source']
+        if 'amount' in data:
+            collection.amount = float(data['amount'])
+        if 'date' in data:
+            try:
+                collection.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+            except ValueError:
+                return {'error': 'Invalid date format. Use YYYY-MM-DD'}, 400
+
+        try:
+            db.session.commit()
+            return collection.to_dict(), 200
+        except Exception:
+            db.session.rollback()
+            return {'error': 'Failed to update collection'}, 500
+        
+    def delete(self, collection_id):
+        collection = Collection.query.get(collection_id)
+        if not collection:
+            return {'error': 'Collection not found'}, 404
+
+        try:
+            db.session.delete(collection)
+            db.session.commit()
+            return {'message': 'Collection deleted successfully'}, 200
+        except Exception:
+            db.session.rollback()
+            return {'error': 'Failed to delete collection'}, 500
+                        
