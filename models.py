@@ -7,15 +7,15 @@ import enum
 db = SQLAlchemy()
 
 class PaymentMethod(enum.Enum):
-    CASH = "cash"
-    MPESA = "mpesa"
-    TILL = "till"
-    INVOICE = "invoice"
-    CARD = "card"
+    CASH = "CASH"
+    MPESA = "MPESA"
+    TILL = "TILL"
+    INVOICE = "INVOICE"
+    CARD = "CARD"
 
 class ExpensePaymentMethod(enum.Enum):
-    CASH = "cash"
-    MPESA = "mpesa"
+    CASH = "CASH"
+    MPESA = "MPESA"
 
 class Collection(db.Model, SerializerMixin):
     __tablename__ = 'collections'
@@ -28,8 +28,6 @@ class Collection(db.Model, SerializerMixin):
     amount = db.Column(db.Float)
     date = db.Column(db.Date, default=date.today, nullable=False)
 
-    serialize_rules = ('-id',)
-
 class Expense(db.Model, SerializerMixin):
     __tablename__ = 'expenses'
 
@@ -38,8 +36,6 @@ class Expense(db.Model, SerializerMixin):
     amount = db.Column(db.Float, nullable=False)
     payment_method = db.Column(Enum(ExpensePaymentMethod), nullable=False)
     date = db.Column(db.Date, default=date.today, nullable=False)
-
-    serialize_rules = ('-id',)
 
     @staticmethod
     def get_day_tallies(target_date):

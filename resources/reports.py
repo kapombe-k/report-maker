@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import send_file
 from models import Expense
 from datetime import datetime
-from report_builder import DailyReportBuilder
+from .report_builder import DailyReportBuilder
 
 
 class ReportResource(Resource):

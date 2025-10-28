@@ -77,6 +77,7 @@ class CollectionResource(Resource):
         if 'payment_method' in data:
             if data['payment_method'] not in [pm.value for pm in PaymentMethod]:
                 return {'error': 'Invalid payment method'}, 400
+            payment_method = PaymentMethod(data['payment_method'])
             collection.payment_method = PaymentMethod(data['payment_method'])
         if 'invoice_source' in data:
             collection.invoice_source = data['invoice_source']

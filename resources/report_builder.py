@@ -2,7 +2,7 @@
 from openpyxl import Workbook
 from openpyxl.styles import Font
 from io import BytesIO
-from styles import ExcelStyles
+from .styles import ExcelStyles
 
 
 class DailyReportBuilder:
@@ -27,7 +27,7 @@ class DailyReportBuilder:
 
     def _add_title(self):
         """Add report title"""
-        self.ws.merge_cells(f"A{self.current_row}:G{self.current_row}")
+        self.ws.merge_cells(f"A{self.current_row}:D{self.current_row}")
         title_cell = self.ws.cell(row=self.current_row, column=1)
         title_cell.value = f"Daily Report - {self.date_str}"
         title_cell.font = Font(name="Calibri", size=14, bold=True)
@@ -41,15 +41,13 @@ class DailyReportBuilder:
             return
 
         # Section header
-        self.ws.merge_cells(f"A{self.current_row}:G{self.current_row}")
+        self.ws.merge_cells(f"A{self.current_row}:E{self.current_row}")
         section_cell = self.ws.cell(row=self.current_row, column=1, value="COLLECTIONS")
         ExcelStyles.apply_style(section_cell, ExcelStyles.pattern_4_section())
         self.current_row += 1
 
         # Table headers
         headers = [
-            "Date",
-            "Type",
             "Card No",
             "Procedure",
             "Payment Method",
@@ -61,15 +59,13 @@ class DailyReportBuilder:
         # Data rows
         for collection in self.day_data["collections"]:
             row_data = [
-                self.date_str,
-                "Collection",
                 collection["card_no"],
                 collection["procedure"],
                 collection["payment_method"],
                 collection.get("invoice_source", ""),
                 collection["amount"],
             ]
-            self._write_data_row(row_data, amount_col=7)
+            self._write_data_row(row_data, amount_col=5)
 
         self.current_row += 1  # Spacer
 
@@ -79,14 +75,13 @@ class DailyReportBuilder:
             return
 
         # Section header
-        self.ws.merge_cells(f"A{self.current_row}:G{self.current_row}")
+        self.ws.merge_cells(f"A{self.current_row}:D{self.current_row}")
         section_cell = self.ws.cell(row=self.current_row, column=1, value="EXPENSES")
         ExcelStyles.apply_style(section_cell, ExcelStyles.pattern_4_section())
         self.current_row += 1
 
         # Table headers
         headers = [
-            "Date",
             "Expense Name",
             "Payment Method",
             "Amount",
@@ -96,15 +91,11 @@ class DailyReportBuilder:
         # Data rows
         for expense in self.day_data["expenses"]:
             row_data = [
-                self.date_str,
-                "Expense",
-                "",
                 expense["expense_name"],
                 expense["payment_method"],
-                "",
                 expense["amount"],
             ]
-            self._write_data_row(row_data, amount_col=7)
+            self._write_data_row(row_data, amount_col=3)
 
         self.current_row += 1  # Spacer
 
@@ -113,7 +104,7 @@ class DailyReportBuilder:
         self.current_row += 1
 
         # Section header
-        self.ws.merge_cells(f"A{self.current_row}:G{self.current_row}")
+        self.ws.merge_cells(f"A{self.current_row}:D{self.current_row}")
         totals_header = self.ws.cell(
             row=self.current_row, column=1, value="DAILY TOTALS"
         )
@@ -170,8 +161,8 @@ class DailyReportBuilder:
 
     def _write_total_row(self, label, value, bold=False):
         """Write a total row with Pattern 5 styling"""
-        label_cell = self.ws.cell(row=self.current_row, column=6, value=label)
-        value_cell = self.ws.cell(row=self.current_row, column=7, value=value)
+        label_cell = self.ws.cell(row=self.current_row, column=3, value=label)
+        value_cell = self.ws.cell(row=self.current_row, column=4, value=value)
 
         if bold:
             ExcelStyles.apply_style(label_cell, ExcelStyles.pattern_5_totals_bold())
@@ -185,7 +176,7 @@ class DailyReportBuilder:
 
     def _set_column_widths(self):
         """Set appropriate column widths"""
-        widths = {"A": 12, "B": 12, "C": 10, "D": 25, "E": 18, "F": 18, "G": 15}
+        widths = {"A": 25, "B": 18, "C": 18, "D": 15}
         for col, width in widths.items():
             self.ws.column_dimensions[col].width = width
 
