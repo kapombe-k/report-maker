@@ -20,7 +20,7 @@ class CollectionResource(Resource):
         data = request.get_json()
 
         # Manual validation
-        required_fields = ['card_no', 'procedure', 'payment_method', 'amount']
+        required_fields = ['card_no', 'procedure', 'payment_method', 'amount', 'doctor']
         for field in required_fields:
             if field not in data or not data[field]:
                 return {'error': f'{field} is required'}, 400
@@ -51,6 +51,7 @@ class CollectionResource(Resource):
             procedure=data['procedure'],
             payment_method=PaymentMethod(data['payment_method']),
             invoice_source=data.get('invoice_source'),
+            doctor = data['doctor'],
             amount=amount,
             date=date
         )
@@ -83,6 +84,8 @@ class CollectionResource(Resource):
             collection.invoice_source = data['invoice_source']
         if 'amount' in data:
             collection.amount = float(data['amount'])
+        if 'doctor' in data:
+            collection.doctor = data['doctor']
         if 'date' in data:
             try:
                 collection.date = datetime.strptime(data['date'], '%Y-%m-%d').date()

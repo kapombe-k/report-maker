@@ -18,7 +18,7 @@ class ExcelStyles:
     def pattern_1_header():
         """Bold + Full Border (Table Headers)"""
         return {
-            "font": Font(name="Calibri", size=11, bold=True),
+            "font": Font(name="Calibri", size=14, bold=True),
             "border": Border(
                 top=ExcelStyles.THIN,
                 bottom=ExcelStyles.THIN,
@@ -62,7 +62,7 @@ class ExcelStyles:
     def pattern_4_section():
         """Bold + Left Medium Border (Section Headers)"""
         return {
-            "font": Font(name="Calibri", size=11, bold=True),
+            "font": Font(name="Calibri", size=13, bold=True),
             "border": Border(
                 top=ExcelStyles.THIN,
                 bottom=ExcelStyles.THIN,
@@ -76,7 +76,7 @@ class ExcelStyles:
     def pattern_5_totals():
         """Plain Text + Top/Bottom Border (Totals)"""
         return {
-            "font": Font(name="Calibri", size=11),
+            "font": Font(name="Calibri", size=12),
             "border": Border(top=ExcelStyles.THIN, bottom=ExcelStyles.THIN),
             "alignment": ExcelStyles.LEFT_CENTER,
         }
@@ -85,7 +85,7 @@ class ExcelStyles:
     def pattern_5_totals_bold():
         """Bold variant for total labels"""
         style = ExcelStyles.pattern_5_totals()
-        style["font"] = Font(name="Calibri", size=11, bold=True)
+        style["font"] = Font(name="Calibri", size=13, bold=True)
         return style
 
     @staticmethod

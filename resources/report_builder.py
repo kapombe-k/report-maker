@@ -53,6 +53,7 @@ class DailyReportBuilder:
             "Payment Method",
             "Invoice Source",
             "Amount",
+            "Doctor"
         ]
         self._write_header_row(headers)
 
@@ -64,8 +65,9 @@ class DailyReportBuilder:
                 collection["payment_method"],
                 collection.get("invoice_source", ""),
                 collection["amount"],
+                collection["doctor"]
             ]
-            self._write_data_row(row_data, amount_col=5)
+            self._write_data_row(row_data, amount_col=6)
 
         self.current_row += 1  # Spacer
 
