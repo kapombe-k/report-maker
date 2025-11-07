@@ -26,7 +26,7 @@ class Collection(db.Model, SerializerMixin):
     payment_method = db.Column(Enum(PaymentMethod), nullable=False)
     invoice_source = db.Column(db.String(100), nullable=True)  # Only for invoice payments
     amount = db.Column(db.Float)
-    doctor =  db.Column(db.String(100), nullable=False)
+    doctor =  db.Column(db.String(100))
     date = db.Column(db.Date, default=date.today, nullable=False)
 
 class Expense(db.Model, SerializerMixin):
