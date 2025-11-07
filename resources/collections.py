@@ -31,7 +31,7 @@ class CollectionResource(Resource):
         if data['payment_method'] == 'invoice' and 'invoice_source' not in data:
             return {'error': 'invoice_source is required for invoice payments'}, 400
 
-        if 'invoice_source' in data and data['payment_method'] != 'invoice':
+        if 'invoice_source' in data and data['payment_method'] != 'INVOICE':
             return {'error': 'invoice_source should only be provided for invoice payments'}, 400
 
         date = data.get('date')
@@ -50,7 +50,7 @@ class CollectionResource(Resource):
             card_no=data['card_no'],
             procedure=data['procedure'],
             payment_method=PaymentMethod(data['payment_method']),
-            invoice_source=data.get('invoice_source'),
+            invoice_source=data['invoice_source'] if 'invoice_source' in data else None,
             doctor = data['doctor'],
             amount=amount,
             date=date
